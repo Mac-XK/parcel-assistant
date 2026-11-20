@@ -5,7 +5,7 @@
 
 - **最低系统**：iOS 15.0（iPhone）
 - **技术栈**：Swift 5 + SwiftUI + WKWebView + Keychain + UserNotifications，无第三方依赖
-- **产物**：`build/包裹助手-1.2.0-ios15-unsigned.ipa`（arm64、未签名，用于 TrollStore）
+- **产物**：Release 里的 `ParcelPal-1.2.0-ios15-unsigned.ipa`（arm64、未签名，用于 TrollStore）
 
 > 所有包裹、驿站、登录态只存在本机：数据写沙盒 `Application Support`，凭证写钥匙串，不上传任何服务器。
 > 仓库里**没有任何演示数据**，首次启动就是空列表。
@@ -100,7 +100,7 @@ Box/
 
 ## 安装（TrollStore）
 
-1. 下载 Release 里的 `包裹助手-1.2.0-ios15-unsigned.ipa`
+1. 下载 [Release](https://github.com/Mac-XK/parcel-assistant/releases/latest) 里的 `ParcelPal-1.2.0-ios15-unsigned.ipa`
 2. 传到手机 → 文件 App 里点击 → 共享 → **TrollStore → Install**
 3. 首次启动按需允许通知；到「设置 → 平台授权」逐个登录
 
