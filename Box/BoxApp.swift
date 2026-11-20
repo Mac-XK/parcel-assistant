@@ -12,6 +12,12 @@ struct BoxApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .task {
+                    Notifier.shared.configure()
+                    #if DEBUG
+                    SelfTest.runIfRequested()
+                    #endif
+                }
         }
     }
 }
