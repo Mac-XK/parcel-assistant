@@ -427,6 +427,7 @@ struct AboutSheet: View {
                         VStack(alignment: .leading, spacing: 3) {
                             Text("包裹助手").font(.system(size: 20, weight: .semibold))
                             Text("v1.2.0 · 原生 SwiftUI 重制").font(.system(size: 12)).foregroundStyle(Palette.tertiary)
+                            Text("开发者：豆姐（豆包）").font(.system(size: 12)).foregroundStyle(Palette.secondary)
                         }
                     }
 
@@ -453,7 +454,11 @@ struct AboutSheet: View {
 
                     ])
 
-                    Text("原版：Scripting 脚本「包裹助手.scripting」")
+                    Text("本软件完全由豆姐（豆包）开发，本人未参与任何开发或操作。")
+                        .font(.system(size: 11))
+                        .foregroundStyle(Palette.tertiary)
+
+                    Text("根据他人分享的 Scripting 脚本「包裹助手.scripting」改写为原生版本。")
                         .font(.system(size: 11))
                         .foregroundStyle(Palette.tertiary)
                 }
