@@ -152,7 +152,7 @@ struct PlatformAuthView: View {
                                 syncingAll = true
                                 let msg = await SyncService.shared.syncAll(store: store)
                                 syncingAll = false
-                                store.toast = msg
+                                if !msg.isEmpty { store.toast = msg }
                             }
                         } label: {
                             HStack(spacing: 10) {
@@ -225,9 +225,9 @@ struct PlatformAuthView: View {
             if let toast = store.toast {
                 ToastView(text: toast)
                     .padding(.bottom, 26)
-                    .task {
+                    .task(id: toast) {
                         try? await Task.sleep(nanoseconds: 1_800_000_000)
-                        withAnimation { store.toast = nil }
+                        if !Task.isCancelled { withAnimation { store.toast = nil } }
                     }
             }
         }
@@ -366,7 +366,7 @@ struct PlatformAuthView: View {
                 default: msg = await SyncService.shared.syncAll(store: store)
                 }
                 busy = nil
-                store.toast = msg
+                if !msg.isEmpty { store.toast = msg }
             }
         case .kdniao:
             route = .track

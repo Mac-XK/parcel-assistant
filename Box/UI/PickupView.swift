@@ -98,9 +98,9 @@ struct PickupView: View {
                     ToastView(text: toast)
                         .padding(.bottom, 30)
                         .transition(.move(edge: .bottom).combined(with: .opacity))
-                        .task {
+                        .task(id: toast) {
                             try? await Task.sleep(nanoseconds: 1_600_000_000)
-                            withAnimation { store.toast = nil }
+                            if !Task.isCancelled { withAnimation { store.toast = nil } }
                         }
                 }
             }
@@ -320,11 +320,16 @@ struct PickupView: View {
 
     // MARK: 动作
 
+    @MainActor
     private func refresh() async {
+        // 下拉 + 工具栏按钮可能同时触发，重复请求会互相取消（URLError -999）
+        guard !syncing else { return }
         syncing = true
-        try? await Task.sleep(nanoseconds: 700_000_000)
+        defer { syncing = false }
+
         let report = await SyncService.shared.syncAll(store: store)
-        syncing = false
+        // 视图被销毁/切页导致的取消不算失败，不弹任何提示
+        guard !report.isEmpty, !Task.isCancelled else { return }
         store.toast = report
     }
 }

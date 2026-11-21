@@ -55,6 +55,8 @@ enum MTop {
 
         var attempt = 0
         while true {
+            // 任务被取消时立刻退出，别让调用方把它当成「缺少 token」
+            try Task.checkCancellation()
             guard let cookieHeader = await PlatformSession.shared.cookieHeader(for: .taobao) else { throw Failure.noLogin }
             let token = token(from: cookieHeader)
             guard !token.isEmpty else {

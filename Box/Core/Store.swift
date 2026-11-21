@@ -23,6 +23,27 @@ final class Store: ObservableObject {
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         fileURL = dir.appendingPathComponent("data.json")
         _ = load()
+        cleanupCainiaoJunkOnce()
+    }
+
+    /// 一次性清理：旧版菜鸟同步把「无码、无驿站、未取、无到达时间」的历史订单也灌了进来
+    /// （表现为「累计快件 50、待取 0」）。这些行没有任何可用信息，删掉不影响真实包裹。
+    private func cleanupCainiaoJunkOnce() {
+        let key = "migrate.cleanCainiaoJunk.v1"
+        guard !UserDefaults.standard.bool(forKey: key) else { return }
+        UserDefaults.standard.set(true, forKey: key)
+
+        let before = parcels.count
+        parcels.removeAll { p in
+            p.source == Platform.cainiao.rawValue
+                && p.code.isEmpty && p.station.isEmpty
+                && p.pickedAt == nil && p.arrivedAt == nil
+                && p.status == .transit
+        }
+        if parcels.count != before {
+            lastSync = nil
+            save()
+        }
     }
 
     // MARK: 持久化

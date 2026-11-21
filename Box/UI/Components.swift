@@ -183,9 +183,13 @@ struct ToastView: View {
         Text(text)
             .font(.system(size: 13, weight: .medium))
             .foregroundStyle(.white)
+            .multilineTextAlignment(.center)
+            .lineLimit(2)
+            .truncationMode(.tail)
+            .frame(maxWidth: 300)
             .padding(.horizontal, 14)
             .padding(.vertical, 9)
-            .background(Capsule().fill(Color.black.opacity(0.82)))
+            .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(Color.black.opacity(0.82)))
             .shadow(color: .black.opacity(0.25), radius: 12, y: 4)
     }
 }

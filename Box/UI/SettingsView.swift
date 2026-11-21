@@ -73,9 +73,9 @@ struct SettingsView: View {
                 if let toast = store.toast {
                     ToastView(text: toast)
                         .padding(.bottom, 26)
-                        .task {
+                        .task(id: toast) {
                             try? await Task.sleep(nanoseconds: 1_800_000_000)
-                            withAnimation { store.toast = nil }
+                            if !Task.isCancelled { withAnimation { store.toast = nil } }
                         }
                 }
             }
@@ -325,7 +325,7 @@ struct SettingsView: View {
                     syncing = true
                     let msg = await SyncService.shared.syncAll(store: store)
                     syncing = false
-                    store.toast = msg
+                    if !msg.isEmpty { store.toast = msg }
                 }
             } label: {
                 RowLink(icon: "arrow.triangle.2.circlepath", iconColor: accent,
